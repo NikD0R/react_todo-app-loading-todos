@@ -14,7 +14,7 @@ export const App: React.FC = () => {
   const [title, setTitle] = useState('');
   const [filter, setFilter] = useState<Filter>('all');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
   const activeCount = todos.filter(todo => !todo.completed).length;
   const field = useRef<HTMLInputElement>(null);
 
@@ -70,7 +70,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     field.current?.focus();
-    setLoading(true);
+    //setLoading(true);
 
     if (error) {
       const timer = setTimeout(() => setError(''), 3000);
@@ -81,8 +81,7 @@ export const App: React.FC = () => {
     todosService
       .getTodos()
       .then(setTodos)
-      .catch(() => setError('Unable to load todos'))
-      .finally(() => setLoading(false));
+      .catch(() => setError('Unable to load todos'));
   }, [error]);
 
   if (!todosService.USER_ID) {
@@ -135,13 +134,6 @@ export const App: React.FC = () => {
         </header>
 
         <section className="todoapp__main" data-cy="TodoList">
-          {/* overlay will cover the todo while it is being deleted or updated */}
-          {loading && (
-            <div data-cy="TodoLoader" className="modal overlay">
-              <div className="modal-background has-background-white-ter" />
-              <div className="loader" />
-            </div>
-          )}
           {/* This is a completed todo */}
           {visibleTodos.map(todo => (
             <div
@@ -173,6 +165,11 @@ export const App: React.FC = () => {
               >
                 ×
               </button>
+              {/* overlay will cover the todo while it is being deleted or updated */}
+              <div data-cy="TodoLoader" className="modal overlay">
+                <div className="modal-background has-background-white-ter" />
+                <div className="loader" />
+              </div>
             </div>
           ))}
           {/*  Delete and editting
