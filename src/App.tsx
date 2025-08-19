@@ -30,36 +30,35 @@ export const App: React.FC = () => {
     return true;
   });
 
-  function addTodo(todo: Todo) {
-    setTodos(currentTodos => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const ids = currentTodos.map(todo => todo.id ?? 0);
-      const maxId = ids.length ? Math.max(...ids) : 0;
+  // function addTodo(todo: Todo) {
+  //   setTodos(currentTodos => {
+  //     // eslint-disable-next-line @typescript-eslint/no-shadow
+  //     const ids = currentTodos.map(todo => todo.id ?? 0);
+  //     const maxId = ids.length ? Math.max(...ids) : 0;
 
-      return [...currentTodos, { ...todo, id: maxId + 1 }];
-    });
-  }
+  //     return [...currentTodos, { ...todo, id: maxId + 1 }];
+  //   });
+  // }
 
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    if (!title.trim()) {
-      setError('Title should not be empty');
+  // function handleSubmit(event: React.FormEvent) {
+  //   event.preventDefault();
+  //   if (!title.trim()) {
+  //     setError('Title should not be empty');
 
-      return;
-    }
+  //     return;
+  //   }
 
-    setLoading(true);
-    // імітація API-запиту
-    setTimeout(() => {
-      addTodo({
-        title,
-        userId: todosService.USER_ID,
-        completed: false,
-      });
-      setLoading(false);
-      setTitle('');
-    }, 300); // 300 мс достатньо для UX
-  }
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     addTodo({
+  //       title,
+  //       userId: todosService.USER_ID,
+  //       completed: false,
+  //     });
+  //     setLoading(false);
+  //     setTitle('');
+  //   }, 300);
+  // }
 
   function handleActive(id: number) {
     setTodos(tds => {
@@ -118,7 +117,8 @@ export const App: React.FC = () => {
           )}
 
           {/* Add a todo on form submit */}
-          <form onSubmit={handleSubmit}>
+          {/* <form onSubmit={handleSubmit}> */}
+          <form>
             <input
               data-cy="NewTodoField"
               type="text"
@@ -143,7 +143,7 @@ export const App: React.FC = () => {
             </div>
           )}
           {/* This is a completed todo */}
-          {todos.map(todo => (
+          {visibleTodos.map(todo => (
             <div
               data-cy="Todo"
               className={cn('todo', {
@@ -296,7 +296,12 @@ export const App: React.FC = () => {
           },
         )}
       >
-        <button data-cy="HideErrorButton" type="button" className="delete" />
+        <button
+          data-cy="HideErrorButton"
+          type="button"
+          className="delete"
+          onClick={() => setError('')}
+        />
         {/* show only one message at a time
         Unable to load todos
         <br />
